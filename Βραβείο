@@ -6,190 +6,190 @@ const allScenarios = [
   {
     id: 1,
     question: "Θέλεις να περάσεις τον δρόμο. Το φανάρι για τους πεζούς είναι κόκκινο.", // You want to cross the road. The pedestrian light is red.
-    image: "https://placehold.co/400x250/ADD8E6/000000?text=Traffic+Light", // Image of a Traffic Light
+    image: "https://placehold.co/400x250/ADD8E6/000000?text=Φανάρι", // Image of a Traffic Light
     choices: [
       {
         text: "Περνάω αμέσως, αφού δεν έρχεται κανείς!", // I cross immediately, since no one is coming!
         isCorrect: false,
         feedback: "Ουπς! Το κόκκινο φανάρι σημαίνει «Σταμάτα»! Πρέπει πάντα να περιμένουμε το πράσινο για να περάσουμε με ασφάλεια.", // Oops! The red light means "Stop"! We must always wait for green to cross safely.
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!" // Placeholder for danger outcome
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!" // Placeholder for danger outcome
       },
       {
         text: "Περιμένω υπομονετικά να γίνει πράσινο.", // I wait patiently for it to turn green.
         isCorrect: true,
         feedback: "Μπράβο! Περιμένοντας το πράσινο φανάρι, είσαι ασφαλής και δίνεις το καλό παράδειγμα!", // Bravo! By waiting for the green light, you are safe and set a good example!
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Safe+Crossing" // Placeholder for safe outcome
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ασφαλής+Διάβαση" // Placeholder for safe outcome
       }
     ]
   },
   {
     id: 2,
     question: "Βρίσκεσαι σε μια διάβαση πεζών χωρίς φανάρι.", // You are at a crosswalk without a traffic light.
-    image: "https://placehold.co/400x250/B0C4DE/000000?text=Crosswalk", // Image of a Crosswalk
+    image: "https://placehold.co/400x250/B0C4DE/000000?text=Διάβαση", // Image of a Crosswalk
     choices: [
       {
         text: "Περνάω τρέχοντας χωρίς να κοιτάξω.", // I run across without looking.
         isCorrect: false,
         feedback: "Προσοχή! Πριν περάσεις, κοίτα πάντα δεξιά-αριστερά-δεξιά, ακόμα και στη διάβαση. Τα αυτοκίνητα μπορεί να μην σε δουν!", // Caution! Before crossing, always look right-left-right, even at the crosswalk. Cars might not see you!
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!"
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!"
       },
       {
         text: "Σταματάω, κοιτάω δεξιά-αριστερά-δεξιά και μετά περνάω.", // I stop, look right-left-right, and then cross.
         isCorrect: true,
         feedback: "Εξαιρετικά! Έτσι περνάμε με ασφάλεια τη διάβαση. Είσαι ένας έξυπνος πεζός!", // Excellent! That's how we safely cross the crosswalk. You are a smart pedestrian!
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Safe+Crossing"
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ασφαλής+Διάβαση"
       }
     ]
   },
   {
     id: 3,
     question: "Ετοιμάζεσαι να πας βόλτα με το ποδήλατο.", // You are about to go for a bike ride.
-    image: "https://placehold.co/400x250/FFFACD/000000?text=Bicycle", // Image of a Bicycle
+    image: "https://placehold.co/400x250/FFFACD/000000?text=Ποδήλατο", // Image of a Bicycle
     choices: [
       {
         text: "Πάω χωρίς κράνος, είναι άβολο.", // I go without a helmet, it's uncomfortable.
         isCorrect: false,
         feedback: "Το κράνος είναι ο καλύτερός σου φίλος! Σε προστατεύει σε περίπτωση πτώσης. Πάντα να το φοράς!", // The helmet is your best friend! It protects you in case of a fall. Always wear it!
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!"
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!"
       },
       {
         text: "Φοράω πάντα το κράνος μου σωστά.", // I always wear my helmet correctly.
         isCorrect: true,
         feedback: "Σούπερ! Με το κράνος σου είσαι προστατευμένος και έτοιμος για ασφαλείς βόλτες!", // Super! With your helmet, you are protected and ready for safe rides!
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Safe+Cyclist"
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ασφαλής+Ποδηλάτης"
       }
     ]
   },
   {
     id: 4,
     question: "Μπαίνεις στο αυτοκίνητο για μια βόλτα.", // You get in the car for a ride.
-    image: "https://placehold.co/400x250/DDA0DD/000000?text=Car", // Image of a Car
+    image: "https://placehold.co/400x250/DDA0DD/000000?text=Αυτοκίνητο", // Image of a Car
     choices: [
       {
         text: "Δεν βάζω ζώνη, αφού είναι μικρή διαδρομή.", // I don't wear a seatbelt, since it's a short trip.
         isCorrect: false,
         feedback: "Η ζώνη ασφαλείας σώζει ζωές! Πρέπει να τη φοράς πάντα, σε κάθε διαδρομή, όσο μικρή κι αν είναι.", // The seatbelt saves lives! You must always wear it, on every trip, no matter how short.
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!"
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!"
       },
       {
         text: "Βάζω πάντα τη ζώνη ασφαλείας μου.", // I always wear my seatbelt.
         isCorrect: true,
         feedback: "Πολύ σωστά! Η ζώνη ασφαλείας είναι απαραίτητη για την προστασία σου στο αυτοκίνητο!", // Very good! The seatbelt is essential for your protection in the car!
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Safe+Passenger"
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ασφαλής+Επιβάτης"
       }
     ]
   },
   {
     id: 5,
     question: "Παίζεις μπάλα και αυτή φεύγει στον δρόμο.", // You are playing ball and it rolls into the street.
-    image: "https://placehold.co/400x250/FFD700/000000?text=Ball+on+Road", // Image of a Ball on Road
+    image: "https://placehold.co/400x250/FFD700/000000?text=Μπάλα", // Image of a Ball on Road
     choices: [
       {
         text: "Τρέχω αμέσως να την πιάσω.", // I immediately run to get it.
         isCorrect: false,
         feedback: "Ποτέ μην τρέχεις στο δρόμο για ένα παιχνίδι! Ζήτα βοήθεια από έναν ενήλικα ή περίμενε να περάσουν τα αυτοκίνητα.", // Never run into the street for a toy! Ask an adult for help or wait for cars to pass.
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!"
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!"
       },
       {
         text: "Ζητάω βοήθεια από έναν ενήλικα ή περιμένω να περάσουν τα αυτοκίνητα.", // I ask an adult for help or wait for cars to pass.
         isCorrect: true,
         feedback: "Έξυπνη κίνηση! Η ασφάλειά σου είναι πιο σημαντική από οποιοδήποτε παιχνίδι.", // Smart move! Your safety is more important than any toy.
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Safe+Play"
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ασφαλές+Παιχνίδι"
       }
     ]
   },
   {
     id: 6,
     question: "Περιμένεις το σχολικό λεωφορείο στη στάση.", // You are waiting for the school bus at the stop.
-    image: "https://placehold.co/400x250/F0E68C/000000?text=School+Bus", // Image of a School Bus
+    image: "https://placehold.co/400x250/F0E68C/000000?text=Σχολικό+Λεωφορείο", // Image of a School Bus
     choices: [
       {
         text: "Στέκομαι πολύ κοντά στην άκρη του δρόμου.", // I stand very close to the edge of the road.
         isCorrect: false,
         feedback: "Προσοχή! Πρέπει να στέκεσαι πάντα σε ασφαλή απόσταση από την άκρη του δρόμου όταν περιμένεις το λεωφορείο.", // Caution! You must always stand at a safe distance from the edge of the road when waiting for the bus.
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!"
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!"
       },
       {
         text: "Περιμένω στην άκρη του πεζοδρομίου, μακριά από τον δρόμο.", // I wait at the edge of the sidewalk, away from the road.
         isCorrect: true,
         feedback: "Σωστά! Έτσι είσαι ασφαλής και έτοιμος να επιβιβαστείς με ασφάλεια.", // Correct! That way you are safe and ready to board safely.
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Safe+Stop"
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ασφαλής+Στάση"
       }
     ]
   },
   {
     id: 7,
     question: "Ποδηλατείς το βράδυ.", // You are cycling at night.
-    image: "https://placehold.co/400x250/4682B4/FFFFFF?text=Night+Cycling", // Image of Night Cycling
+    image: "https://placehold.co/400x250/4682B4/FFFFFF?text=Ποδηλάτης+Νύχτα", // Image of Night Cycling
     choices: [
       {
         text: "Δεν χρειάζομαι φώτα, αφού βλέπω καλά.", // I don't need lights, since I can see well.
         isCorrect: false,
         feedback: "Λάθος! Τα φώτα στο ποδήλατο σε κάνουν ορατό στους άλλους οδηγούς και σε προστατεύουν το βράδυ.", // Wrong! Bicycle lights make you visible to other drivers and protect you at night.
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!"
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!"
       },
       {
         text: "Έχω αναμμένα φώτα μπροστά και πίσω και φοράω ανακλαστήρες.", // I have lights on front and back and wear reflectors.
         isCorrect: true,
         feedback: "Μπράβο! Έτσι είσαι ορατός και ασφαλής ακόμα και στο σκοτάδι.", // Bravo! That way you are visible and safe even in the dark.
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Visible+Cyclist"
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ορατός+Ποδηλάτης"
       }
     ]
   },
   {
     id: 8,
     question: "Βγαίνεις από ένα παρκαρισμένο αυτοκίνητο.", // You are getting out of a parked car.
-    image: "https://placehold.co/400x250/A9A9A9/000000?text=Parked+Car", // Image of a Parked Car
+    image: "https://placehold.co/400x250/A9A9A9/000000?text=Παρκαρισμένο+Αυτοκίνητο", // Image of a Parked Car
     choices: [
       {
         text: "Ανοίγω την πόρτα αμέσως και βγαίνω.", // I open the door immediately and get out.
         isCorrect: false,
         feedback: "Προσοχή! Πάντα να κοιτάς για διερχόμενα οχήματα πριν ανοίξεις την πόρτα του αυτοκινήτου.", // Caution! Always look for oncoming vehicles before opening the car door.
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!"
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!"
       },
       {
         text: "Κοιτάω πρώτα στον καθρέφτη και πίσω μου, και μετά ανοίγω την πόρτα προσεκτικά.", // I first look in the mirror and behind me, and then open the door carefully.
         isCorrect: true,
         feedback: "Πολύ σωστά! Έτσι αποφεύγεις ατυχήματα με άλλα οχήματα ή ποδηλάτες.", // Very good! That way you avoid accidents with other vehicles or cyclists.
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Safe+Exit"
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ασφαλής+Έξοδος"
       }
     ]
   },
   {
     id: 9,
     question: "Βλέπεις ένα φίλο σου στην απέναντι πλευρά του δρόμου.", // You see a friend on the opposite side of the road.
-    image: "https://placehold.co/400x250/FFB6C1/000000?text=Friend+Across+Street", // Image of a Friend Across Street
+    image: "https://placehold.co/400x250/FFB6C1/000000?text=Φίλος+Απέναντι", // Image of a Friend Across Street
     choices: [
       {
         text: "Τρέχω να τον συναντήσω, αφού δεν έρχεται κανείς.", // I run to meet him, since no one is coming.
         isCorrect: false,
         feedback: "Μην τρέχεις ποτέ στον δρόμο! Πάντα να χρησιμοποιείς τη διάβαση ή το φανάρι και να κοιτάς προσεκτικά.", // Never run into the street! Always use the crosswalk or traffic light and look carefully.
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!"
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!"
       },
       {
         text: "Πηγαίνω στη διάβαση ή στο φανάρι και περνάω με ασφάλεια.", // I go to the crosswalk or traffic light and cross safely.
         isCorrect: true,
         feedback: "Μπράβο! Η ασφάλειά σου είναι η προτεραιότητα.", // Bravo! Your safety is the priority.
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Safe+Meeting"
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ασφαλής+Συνάντηση"
       }
     ]
   },
   {
     id: 10,
     question: "Είσαι επιβάτης σε αυτοκίνητο και ο οδηγός μιλάει στο κινητό.", // You are a passenger in a car and the driver is talking on the phone.
-    image: "https://placehold.co/400x250/87CEEB/000000?text=Driver+Phone", // Image of a Driver on Phone
+    image: "https://placehold.co/400x250/87CEEB/000000?text=Οδηγός+με+Κινητό", // Image of a Driver on Phone
     choices: [
       {
         text: "Δεν λέω τίποτα, δεν είναι δική μου δουλειά.", // I don't say anything, it's not my business.
         isCorrect: false,
         feedback: "Είναι σημαντικό να μιλάς για την ασφάλειά σου! Μπορείς να πεις στον οδηγό ότι είναι επικίνδυνο.", // It's important to speak up for your safety! You can tell the driver that it's dangerous.
-        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Danger!"
+        outcomeImage: "https://placehold.co/400x250/FF6347/FFFFFF?text=Κίνδυνος!"
       },
       {
         text: "Του ζητάω ευγενικά να κλείσει το κινητό ή να χρησιμοποιήσει hands-free.", // I politely ask him to hang up the phone or use hands-free.
         isCorrect: true,
         feedback: "Πολύ σωστά! Ο οδηγός πρέπει να είναι συγκεντρωμένος στον δρόμο.", // Very good! The driver must be focused on the road.
-        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Safe+Driving"
+        outcomeImage: "https://placehold.co/400x250/90EE90/000000?text=Ασφαλής+Οδήγηση"
       }
     ]
   }
@@ -288,7 +288,7 @@ function App() {
                 src={currentScenario.image}
                 alt="Scenario Visual"
                 className="w-full h-auto rounded-lg mb-4 object-cover"
-                onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/400x250/CCCCCC/000000?text=Scenario+Image'; }} // Fallback image
+                onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/400x250/CCCCCC/000000?text=Εικόνα+Σεναρίου'; }} // Fallback image
               />
               <p className="text-xl md:text-2xl font-semibold text-gray-800">
                 {currentScenario.question}
@@ -318,7 +318,7 @@ function App() {
                   src={outcomeImage}
                   alt="Outcome Visual"
                   className="w-full h-48 object-cover rounded-lg mb-4"
-                  onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/400x200/CCCCCC/000000?text=Outcome+Image'; }} // Fallback image
+                  onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/400x200/CCCCCC/000000?text=Εικόνα+Αποτελέσματος'; }} // Fallback image
                 />
                 <div className={`text-2xl font-bold mb-3 flex items-center justify-center gap-2 ${isCorrectChoice ? 'text-green-600' : 'text-red-600'}`}>
                   {isCorrectChoice ? (
