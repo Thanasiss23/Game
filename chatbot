@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Οδικής Ασφάλειας</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+        }
+        .chat-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 70vh; /* Ensure it takes up a good portion of the viewport */
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 10px;
+            word-wrap: break-word;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .user-message {
+            background-color: #e0f7fa; /* Light cyan */
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+        .bot-message {
+            background-color: #e8f5e9; /* Light green */
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+        }
+        .chat-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .chat-input:focus {
+            border-color: #38a169; /* Green focus */
+        }
+        .send-button {
+            margin-left: 15px;
+            padding: 12px 25px;
+            background-color: #48bb78; /* Green */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 10px rgba(72, 187, 120, 0.3);
+        }
+        .send-button:hover {
+            background-color: #38a169; /* Darker green */
+            transform: translateY(-1px);
+        }
+        .send-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(72, 187, 120, 0.2);
+        }
+        .loading-indicator {
+            text-align: center;
+            padding: 10px;
+            color: #64748b;
+        }
+        .user-id-display {
+            padding: 10px 20px;
+            background-color: #e2e8f0;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            font-size: 0.8em;
+            color: #4a5568;
+            text-align: center;
+            word-break: break-all; /* Ensure long IDs wrap */
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .modal-close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .modal-close-button:hover,
+        .modal-close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Custom list styling for the bot messages */
+        .bot-message ul, .bot-message ol {
+            margin-top: 5px;
+            margin-left: 20px; /* Indent lists */
+        }
+        .bot-message li {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">Γεια σου! Είμαι ο βοηθός σου για την οδική ασφάλεια. Ρώτησέ με οτιδήποτε θέλεις να μάθεις για το πώς να είσαι ασφαλής στο δρόμο!</div>
+        </div>
+        <div class="loading-indicator hidden" id="loadingIndicator">
+            <p>Σκέφτομαι...</p>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Ρώτησέ με κάτι...">
+            <button id="sendButton" class="send-button">Αποστολή</button>
+        </div>
+        <div class="user-id-display" id="userIdDisplay"></div>
+    </div>
+
+    <!-- Custom Modal for Messages -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button" id="closeModalButton">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables for Firebase and user ID
+        let app;
+        let db;
+        let auth;
+        let userId = 'anonymous'; // Default to anonymous
+
+        // DOM elements
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const userIdDisplay = document.getElementById('userIdDisplay');
+        const modal = document.getElementById('myModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const closeModalButton = document.getElementById('closeModalButton');
+
+        // Initial knowledge base (can be extended by Firestore)
+        const knowledgeBase = {
+            "πεζός": "Ως πεζός, πρέπει πάντα να περπατάς στο πεζοδρόμιο. Όταν διασχίζεις το δρόμο, χρησιμοποίησε τη διάβαση πεζών και κοίτα προσεκτικά αριστερά, μετά δεξιά και πάλι αριστερά πριν περάσεις. Ποτέ μην τρέχεις στο δρόμο!",
+            "φανάρι": "Το φανάρι μας λέει πότε μπορούμε να περάσουμε. Το κόκκινο σημαίνει 'ΣΤΑΜΑΤΑ!', το πράσινο σημαίνει 'ΠΕΡΝΑ!' (αφού κοιτάξεις) και το πορτοκαλί σημαίνει 'ΠΡΟΣΟΧΗ, θα αλλάξει!'.",
+            "κράνος": "Το κράνος είναι πολύ σημαντικό για τους ποδηλάτες! Προστατεύει το κεφάλι σου σε περίπτωση που πέσεις. Πάντα να φοράς κράνος όταν κάνεις ποδήλατο!",
+            "ζώνη ασφαλείας": "Η ζώνη ασφαλείας σε κρατάει ασφαλή μέσα στο αυτοκίνητο. Πάντα να τη φοράς σωστά, ακόμα και για μικρές διαδρομές. Είναι ο καλύτερός σου φίλος στο αυτοκίνητο!",
+            "διάβαση πεζών": "Η διάβαση πεζών είναι το σημείο στο δρόμο με τις λευκές γραμμές, όπου οι πεζοί μπορούν να διασχίσουν με ασφάλεια. Πάντα να τη χρησιμοποιείς!",
+            "σήματα κυκλοφορίας": "Τα σήματα κυκλοφορίας είναι σαν τους κανόνες του δρόμου. Μας δείχνουν τι πρέπει να κάνουμε για να είμαστε ασφαλείς. Υπάρχουν σήματα STOP, σήματα που δείχνουν πού είναι το σχολείο και πολλά άλλα!",
+            "παίζω στο δρόμο": "Ο δρόμος δεν είναι παιδική χαρά! Είναι επικίνδυνο να παίζεις στο δρόμο γιατί περνούν αυτοκίνητα. Να παίζεις πάντα σε ασφαλή μέρη, όπως πάρκα ή αυλές.",
+            "οδική κουλτούρα": "Οδική κουλτούρα σημαίνει να είμαστε ευγενικοί και προσεκτικοί με όλους στο δρόμο. Να σεβόμαστε τους άλλους οδηγούς, τους πεζούς και τους ποδηλάτες. Έτσι, όλοι είμαστε πιο ασφαλείς!",
+            "τυφλά σημεία": "Τα τυφλά σημεία είναι μέρη γύρω από ένα αυτοκίνητο που ο οδηγός δεν μπορεί να δει. Γι' αυτό, πρέπει να είσαι πολύ προσεκτικός όταν περπατάς κοντά σε παρκαρισμένα αυτοκίνητα και να μην παίζεις πίσω τους.",
+            "φώτα ποδηλάτου": "Τα φώτα στο ποδήλατο σε βοηθούν να σε βλέπουν οι οδηγοί, ειδικά όταν είναι σκοτάδι ή έχει συννεφιά. Πάντα να ανάβεις τα φώτα σου όταν κάνεις ποδήλατο!",
+            "παιδικό κάθισμα": "Το παιδικό κάθισμα είναι ειδικά σχεδιασμένο για να κρατάει τα παιδιά ασφαλή στο αυτοκίνητο, ανάλογα με την ηλικία και το βάρος τους. Είναι πολύ σημαντικό να χρησιμοποιείται σωστά!",
+            "κανόνες": "Οι κανόνες οδικής ασφάλειας είναι οδηγίες που πρέπει να ακολουθούμε για να προστατεύουμε τον εαυτό μας και τους άλλους στο δρόμο.",
+            "ασφάλεια": "Ασφάλεια στο δρόμο σημαίνει να προσέχουμε για να μην συμβεί κάτι κακό. Να είμαστε προσεκτικοί και να ακολουθούμε τους κανόνες.",
+            "αυτοκίνητο": "Όταν είσαι μέσα στο αυτοκίνητο, πάντα να φοράς ζώνη ασφαλείας και να κάθεσαι ήσυχα. Ποτέ μην ανοίγεις τις πόρτες ή βγάζεις τα χέρια σου έξω από το παράθυρο.",
+            "ποδήλατο": "Όταν κάνεις ποδήλατο, πάντα να φοράς κράνος, να έχεις φώτα και να οδηγείς στη σωστή πλευρά του δρόμου. Δίνε σήμα όταν στρίβεις!",
+            "πεζοδρόμιο": "Το πεζοδρόμιο είναι το ασφαλές μέρος για τους πεζούς να περπατούν, μακριά από τα αυτοκίνητα.",
+            "σχολείο": "Κοντά στο σχολείο πρέπει να είμαστε όλοι πολύ προσεκτικοί! Οι οδηγοί πρέπει να πηγαίνουν αργά και τα παιδιά να προσέχουν όταν διασχίζουν το δρόμο.",
+            "σεβασμός": "Ο σεβασμός στο δρόμο σημαίνει να είμαστε ευγενικοί και να προσέχουμε τους άλλους, είτε είναι οδηγοί, είτε πεζοί, είτε ποδηλάτες."
+        };
+
+        // Custom Modal functions
+        function showModal(message) {
+            modalMessage.textContent = message;
+            modal.style.display = 'flex'; // Use flex to center
+        }
+
+        function hideModal() {
+            modal.style.display = 'none';
+        }
+
+        closeModalButton.onclick = hideModal;
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                hideModal();
+            }
+        }
+
+        // Firebase Initialization and Authentication
+        window.onload = async function () {
+            try {
+                // Mandatory __app_id and __firebase_config
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+
+                if (Object.keys(firebaseConfig).length === 0) {
+                    console.error("Firebase config is missing. Cannot initialize Firebase.");
+                    showModal("Προέκυψε σφάλμα: Δεν βρέθηκε η διαμόρφωση του Firebase. Η εφαρμογή ενδέχεται να μην λειτουργεί σωστά.");
+                    return;
+                }
+
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Sign in with custom token if available, otherwise anonymously
+                if (typeof __initial_auth_token !== 'undefined') {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        userIdDisplay.textContent = `ID χρήστη: ${userId}`;
+                        console.log("Firebase initialized and user authenticated:", userId);
+                        // Load existing knowledge from Firestore
+                        loadKnowledgeFromFirestore();
+                    } else {
+                        userId = crypto.randomUUID(); // Fallback for unauthenticated users
+                        userIdDisplay.textContent = `ID χρήστη (προσωρινό): ${userId}`;
+                        console.log("Firebase initialized, user not authenticated, using temporary ID:", userId);
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase or authenticating:", error);
+                showModal(`Προέκυψε σφάλμα κατά την εκκίνηση της εφαρμογής: ${error.message}.`);
+            }
+        };
+
+        // Function to add messages to the chat display
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+
+            if (sender === 'bot') {
+                messageDiv.innerHTML = formatBotResponse(text); // Use innerHTML for formatted content
+            } else {
+                messageDiv.textContent = text; // User messages remain plain text
+            }
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
+        }
+
+        /**
+         * Formats the bot's response into HTML, converting multi-line text into
+         * ordered or unordered lists based on content.
+         * It also removes any Markdown bolding (**) from the text.
+         * @param {string} text - The raw text response from the bot.
+         * @returns {string} - The HTML formatted string.
+         */
+        function formatBotResponse(text) {
+            // First, remove all bold markdown from the entire text
+            let cleanedText = text.replace(/\*\*/g, '');
+
+            // Split the text by newlines to check for potential list items
+            const lines = cleanedText.split('\n').filter(line => line.trim() !== '');
+
+            // If there's more than one line, try to format as a list
+            if (lines.length > 1) {
+                // Check if it looks like an ordered list (starts with numbers like "1. ", "2. ")
+                const isOrderedList = lines.every(line => /^\d+\.\s/.test(line.trim()));
+
+                if (isOrderedList) {
+                    let html = '<ol class="list-decimal list-inside">'; // Tailwind for ordered list
+                    lines.forEach(line => {
+                        // Remove the leading number and dot for display
+                        const cleanLine = line.trim().replace(/^\d+\.\s/, '');
+                        html += `<li class="mb-1">${cleanLine}</li>`;
+                    });
+                    html += '</ol>';
+                    return html;
+                } else {
+                    // Otherwise, treat as an unordered list (bullets)
+                    let html = '<ul class="list-disc list-inside">'; // Tailwind for unordered list
+                    lines.forEach(line => {
+                        // Remove any common leading bullet characters if LLM adds them
+                        const cleanLine = line.trim().replace(/^[-*•]\s/, '');
+                        html += `<li class="mb-1">${cleanLine}</li>`;
+                    });
+                    html += '</ul>';
+                    return html;
+                }
+            }
+            // If it's a single line or doesn't look like a list, return as a plain paragraph
+            return `<p>${cleanedText}</p>`;
+        }
+
+
+        // Function to load knowledge from Firestore
+        async function loadKnowledgeFromFirestore() {
+            try {
+                const knowledgeCollectionRef = collection(db, `artifacts/${__app_id}/public/data/roadSafetyKnowledge`);
+                const q = query(knowledgeCollectionRef);
+                const querySnapshot = await getDocs(q);
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.question && data.answer) {
+                        // Add to local knowledgeBase if not already present
+                        // Normalize question for key (e.g., lowercase, no punctuation)
+                        const normalizedQuestion = data.question.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, '');
+                        if (!knowledgeBase[normalizedQuestion]) {
+                            knowledgeBase[normalizedQuestion] = data.answer;
+                            console.log(`Knowledge loaded from Firestore: ${data.question}`);
+                        }
+                    }
+                });
+                console.log("Knowledge base updated from Firestore.");
+            } catch (error) {
+                console.error("Error loading knowledge from Firestore:", error);
+                showModal("Προέκυψε σφάλμα κατά τη φόρτωση δεδομένων από τη βάση. Η εφαρμογή θα λειτουργήσει με τα αρχικά δεδομένα.");
+            }
+        }
+
+        // Function to save new knowledge to Firestore
+        async function saveKnowledgeToFirestore(question, answer) {
+            try {
+                const knowledgeCollectionRef = collection(db, `artifacts/${__app_id}/public/data/roadSafetyKnowledge`);
+                // Normalize question for checking existence
+                const normalizedQuestion = question.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, '');
+
+                // Check if this question already exists to avoid duplicates
+                const q = query(knowledgeCollectionRef, where("question", "==", question));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    await addDoc(knowledgeCollectionRef, {
+                        question: question,
+                        answer: answer,
+                        timestamp: new Date(),
+                        source: "LLM_Search_Enrichment",
+                        userId: userId
+                    });
+                    // Add to local knowledgeBase as well
+                    knowledgeBase[normalizedQuestion] = answer;
+                    console.log("New knowledge saved to Firestore and local KB:", question);
+                } else {
+                    console.log("Knowledge for this question already exists in Firestore:", question);
+                }
+            } catch (error) {
+                console.error("Error saving knowledge to Firestore:", error);
+                showModal("Προέκυψε σφάλμα κατά την αποθήκευση νέων δεδομένων.");
+            }
+        }
+
+        // Function to get answer from local knowledge base
+        function getLocalAnswer(queryText) {
+            const normalizedQuery = queryText.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, '');
+            for (const key in knowledgeBase) {
+                // Check if the query contains the key or the key contains the query
+                if (normalizedQuery.includes(key) || key.includes(normalizedQuery)) {
+                    return knowledgeBase[key];
+                }
+            }
+            return null;
+        }
+
+        // Function to call the LLM (Gemini 2.0 Flash)
+        async function getLLMResponse(prompt, searchResults = null) {
+            let chatHistory = [];
+            let fullPrompt = prompt;
+
+            if (searchResults) {
+                fullPrompt = `Ο χρήστης ρωτάει: "${prompt}". Βρήκα τις ακόλουθες πληροφορίες από αναζήτηση στο διαδίκτυο: ${searchResults}. Χρησιμοποίησε αυτές τις πληροφορίες για να απαντήσεις στην ερώτηση του χρήστη με απλό και κατανοητό τρόπο για παιδιά, εξηγώντας τους κανόνες οδικής ασφάλειας και οδικής κουλτούρας. Εάν οι πληροφορίες δεν είναι σχετικές, απάντησε με βάση τη γενική σου γνώση. Δώσε την απάντηση σε μορφή λίστας με αριθμούς ή κουκκίδες αν περιέχει πολλά σημεία. Μην χρησιμοποιείς έντονη γραφή (bold) στην απάντηση.`;
+            } else {
+                fullPrompt = `Ο χρήστης ρωτάει: "${prompt}". Απάντησε σε αυτή την ερώτηση με απλό και κατανοητό τρόπο για παιδιά, εξηγώντας τους κανόνες οδικής ασφάλειας και οδικής κουλτούρας. Δώσε την απάντηση σε μορφή λίστας με αριθμούς ή κουκκίδες αν περιέχει πολλά σημεία. Μην χρησιμοποιείς έντονη γραφή (bold) στην απάντηση.`;
+            }
+
+            chatHistory.push({ role: "user", parts: [{ text: fullPrompt }] });
+
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas will automatically provide it in runtime
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Unexpected LLM response structure:", result);
+                    return "Συγγνώμη, δεν μπόρεσα να βρω μια απάντηση αυτή τη στιγμή. Μπορείς να δοκιμάσεις να με ρωτήσεις κάτι άλλο;";
+                }
+            } catch (error) {
+                console.error("Error calling LLM API:", error);
+                return "Ωχ! Κάτι πήγε στραβά και δεν μπορώ να απαντήσω τώρα. Παρακαλώ δοκίμασε ξανά αργότερα.";
+            }
+        }
+
+        // Event listener for send button
+        sendButton.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        async function sendMessage() {
+            const userMessage = chatInput.value.trim();
+            if (userMessage === '') return;
+
+            addMessage(userMessage, 'user');
+            chatInput.value = '';
+            loadingIndicator.classList.remove('hidden');
+
+            let botResponse = '';
+            let foundInLocalKB = false;
+
+            // 1. Try to get answer from local knowledge base
+            const localAnswer = getLocalAnswer(userMessage);
+            if (localAnswer) {
+                botResponse = localAnswer;
+                foundInLocalKB = true;
+            } else {
+                // 2. If not found, call LLM (which acts as if it has internet access)
+                botResponse = await getLLMResponse(userMessage);
+                // 3. Save new knowledge to Firestore if it came from LLM and wasn't in local KB
+                // This assumes the LLM's response is a "new" piece of knowledge from its "internet access"
+                // We save the original question and the LLM's generated answer.
+                if (botResponse && !foundInLocalKB) {
+                    await saveKnowledgeToFirestore(userMessage, botResponse);
+                }
+            }
+
+            addMessage(botResponse, 'bot');
+            loadingIndicator.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
